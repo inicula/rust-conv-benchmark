@@ -1,6 +1,5 @@
 Relates to:
-* https://blog.m-ou.se/floats/#results
-* https://github.com/rust-lang/compiler-builtins/pull/464
+* [https://blog.m-ou.se/floats/#results](https://github.com/m-ou-se/blog/issues/8#issuecomment-2372047123)
 
 Result:
 
