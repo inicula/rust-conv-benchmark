@@ -3,27 +3,27 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 fn to_bits_if(i: u128) -> u64 {
     let n = i.leading_zeros();
     let y = i.wrapping_shl(n);
-    let a = (y >> 75) as u64; // Significant bits, with bit 53 still in tact.
-    let b = (y >> 11 | y & 0xFFFF_FFFF) as u64; // Insignificant bits, only relevant for rounding.
-    let m = a + ((b - (b >> 63 & !a)) >> 63); // Add one when we need to round up. Break ties to even.
+    let a = (y >> 75) as u64;
+    let b = (y >> 11 | y & 0xFFFF_FFFF) as u64;
+    let m = a + ((b - (b >> 63 & !a)) >> 63);
 
     // Use `if`
-    let e = if i == 0 { 0 } else { 1149 - n as u64 }; // Exponent plus 1023, minus one, except for zero.
+    let e = if i == 0 { 0 } else { 1149 - n as u64 };
 
-    (e << 52) + m // + not |, so the mantissa can overflow into the exponent.
+    (e << 52) + m
 }
 
 fn to_bits_pred(i: u128) -> u64 {
     let n = i.leading_zeros();
     let y = i.wrapping_shl(n);
-    let a = (y >> 75) as u64; // Significant bits, with bit 53 still in tact.
-    let b = (y >> 11 | y & 0xFFFF_FFFF) as u64; // Insignificant bits, only relevant for rounding.
-    let m = a + ((b - (b >> 63 & !a)) >> 63); // Add one when we need to round up. Break ties to even.
+    let a = (y >> 75) as u64;
+    let b = (y >> 11 | y & 0xFFFF_FFFF) as u64;
+    let m = a + ((b - (b >> 63 & !a)) >> 63);
 
     // Use predication instead of `if`
-    let e = ((i != 0) as u64) * ((1149 - n) as u64); // Exponent plus 1023, minus one, except for zero.
+    let e = ((i != 0) as u64) * ((1149 - n) as u64);
 
-    (e << 52) + m // + not |, so the mantissa can overflow into the exponent.
+    (e << 52) + m
 }
 
 fn convert_with_if(i: u128) -> f64 {
