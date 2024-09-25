@@ -1,3 +1,5 @@
+Run with `cargo bench`.
+
 Relates to:
 * https://github.com/m-ou-se/blog/issues/8#issuecomment-2372047123
 
